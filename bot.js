@@ -12,13 +12,13 @@ var fs = require('fs');
 
 const BootBot = require('bootbot');
 
-app.set('port', 3000)
+app.set('port', process.env.PORT)
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 const bot = new BootBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
-  verifyToken: process.env.VERIFY_TOKEN,
+  verifyToken: 'LAUL',
   appSecret: process.env.APP_SECRET
 });
 
@@ -58,6 +58,10 @@ app.get('/webhooks', (req, res) => {
     }
 });
 
+app.get('/colleursJSON', (req, res) => {
+  res.sendFile(__dirname + "/.data/colleurs.json"); 
+});
+
 app.post('/saveNewColleurs19241070', (req, res) => {
   var data = req.body;
   /*if(data.pwd != process.env.PWD){
@@ -72,12 +76,14 @@ app.post('/saveNewColleurs19241070', (req, res) => {
   });
 });
 
-app.post('/webhook', (req, res) => {
+app.post('/webhooks', (req, res) => {
   var data = req.body;
   if (data.object !== 'page') {
     return;
   }
+
   bot.handleFacebookData(data);
+  
   res.sendStatus(200);
 });
 

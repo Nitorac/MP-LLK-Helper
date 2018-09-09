@@ -87,7 +87,12 @@ module.exports = (bot) => {
   
   function showColle(chatconv, payload, n, name, otherName){
     chatconv.say(`Veuillez patienter ...`);
-    var result = executor.getnNextColles(eleves[name].Colle_groupe, n);
+    try {
+      var result = executor.getnNextColles(eleves[name].Colle_groupe, n);
+    }catch(error){
+      chatconv.say(`Une erreur est survenue : ${error}\n\nVeuillez signaler cette erreur à Tony Ranini.`);
+      return;
+    }
     if(result.length == 0){
       chatconv.say(`Je ne vois pas d'autre colle dans la base de données.\n\nSi c'est une situation anormale, veuillez contacter Tony Ranini`);
       return;
@@ -119,7 +124,9 @@ module.exports = (bot) => {
           var firstName = eleves[actName].Prenom;
           convo.say(`Salut ${firstName}, je vous ai trouvé dans la base de données !\nJe me souviendrai de votre nom.`);
           convo.end();
-          showColle(convo, payload, n, actName, otherName);
+          setTimeout(function(){
+            showColle(convo, payload, n, actName, otherName);
+          }, 1000);
         });
       }else{
         convo.say(`Je ne connais pas ce nom, réessayez en vérifiant qu'il n'y a pas d'erreurs ...`).then(() => askName(convo, n, otherName));

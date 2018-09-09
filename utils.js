@@ -33,16 +33,42 @@ function plural(n, str, exceptPlur){
   }
 }
 
-//offset=0 => current Week Monday ;  offset=1 => next Week Monday
+//offset=0 => current Week Monday in planning, if exists;  offset=1 => next Week Monday
 function getMondayEpoch(offset){
-  var epochs = Object.keys(planning).sort();
-  var currentGmt = nowEpochGmt();
-  for(var i = epochs.length-1; i > -1 + offset; i--){
-    if(currentGmt > parseInt(epochs[i])){
-      return epochs[i+offset];
+  var epochs = Object.keys(planning).map(Number).sort(function(a,b){
+  	return a - b;
+  });
+  var currentGmt = nowEpochGmt();  
+  var a = 0;
+  var b = epochs.length - 1;
+  
+  //Cas d'une date minorante
+  if(currentGmt < epochs[0]){
+    return (offset > epochs.length) ? undefined : epochs[offset];
+  }
+  
+  //Cas d'une date majorante
+  if(currentGmt > epochs[epochs.length-1]){
+    return undefined;
+  }
+  
+  while(b - a > 1){
+    var m = Math.floor((a+b)/2);
+    if(currentGmt > epochs[m]){
+      a = m;
+    }else if(currentGmt < epochs[m]){
+      b = m;
+    }else{
+      a = m;
+      break;
     }
   }
-  return "-1";
+  
+  if(a+offset >= epochs.length){
+    return undefined;
+  }
+  
+  return epochs[a+offset];
 }
 
 function formatDate(date){

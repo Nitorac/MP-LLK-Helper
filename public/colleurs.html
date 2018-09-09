@@ -13,6 +13,7 @@
     <!-- FullCalendar stylesheets -->
     <link rel="stylesheet" href="./fullcalendar/fullcalendar.css"/>
     <link rel="stylesheet" href="./fullcalendar/fullcalendar.print.css" media="print"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css" />
     
     <title>MP - Helper</title>
   </head>
@@ -49,14 +50,16 @@
         </ul>
       </div>
       <div class="my-2 my-lg-0">
-        <button class="btn btn-success" type="button" id="validate">Valider</button>
+        <button class="btn btn-danger" type="button" id="deleteAll">Supprimer tous les colleurs</button>
+        <button class="btn btn-success" type="button" id="validate" style="margin-left: 5px;">Valider</button>
       </div>
     </nav>
-    
-    <div id="header-text">
-      <h4 id="main-title" style="margin-bottom: 75px;"></h4>
+    <div>
+      <div id="header-text">
+        <h4 id="main-title" style="margin-bottom: 75px;"></h4>
+      </div>
+      <div id="calendar"></div>
     </div>
-    <div id="calendar"></div>
     
     <div id="createEventModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -130,31 +133,55 @@
         curElem.Sexe = e.sexeInput.charAt(0);
         curElem.Nom = e.colleurName;
         curElem.DureeEpoch = e.end.unix() - e.start.unix();
-        curElem.Epoch = e.start.unix() - 345600; //349200 = 5 janvier 1970 à 1H du matin (ref du helper)
+        curElem.Epoch = e.start.utc().unix() - 349200; //349200 = 5 janvier 1970 à 1H du matin (ref du helper)
       }
       
       console.log(root);
-      //post("./saveNewColleurs19241070", {"pwd":"123", "json":});
-      $.post('./saveNewColleurs19241070',
-          {
-              pwd: '123',
-              json: JSON.stringify(root)
-          }, function(data) {
-              alert(data);
-      });
+      post2save({pwd: '123',json: JSON.stringify(root)});
     });
+      
     $(document).ready(function() {
       $("#deleteColleur").on("click", function(){
         deleteEvent($('#isModify').val());
       });
       
+      $("#deleteAll").on("click", function(){
+        var confirmation = prompt('Êtes-vous vraiment sûr de vouloir faire ça ? (Oui/Non)');
+        if(confirmation.toLowerCase() == "oui"){
+          post2save({pwd: '123',json: JSON.stringify({})});
+          setTimeout(function(){
+             window.location.reload(1);
+          }, 1000);
+        }
+      });
+      
+      var obj = JSON.parse(getJSON("./colleursJSON"));
+      var keys = Object.keys(obj);
+      var events = [];
+      for(var i = 0; i < keys.length; i++){
+        var cur = obj[keys[i]];
+        var curSexe = (cur.Sexe == "M") ? "Masculin" : "Féminin";
+        var event = {
+          title: getMorMme(curSexe) + cur.Nom,
+          colleurName: cur.Nom,
+          sexeInput: curSexe,
+          matiereInput: cur.Matiere,
+          repere: keys[i],
+          start: $.fullCalendar.moment((cur.Epoch + 349200)*1000),
+          end: $.fullCalendar.moment((cur.Epoch + cur.DureeEpoch + 349200)*1000)
+        };
+        events.push(event);
+      }
+      
       $("#calendar").fullCalendar({
       locale: 'fr',
+      themeSystem: 'jquery-ui',
       header: {
         right: 'agendaWeek',
         left: 'title'
       },
       allDaySlot: false,
+      timezone: 'UTC',
       weekends: false,
       columnFormat: "dddd",
       selectOverlap: false,
@@ -162,7 +189,7 @@
       slotLabelFormat: "H[H](mm)",
       defaultView: 'agendaWeek',
       defaultDate: '1970-01-10',
-      minTime: "00:00:00",
+      minTime: "07:00:00",
       maxTime: "23:00:00",
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
@@ -170,8 +197,8 @@
       select: function (start, end, jsEvent) {
           $('#colleurName').val('');
           $('#titleForm').html("Ajouter un colleur(se)");
-          $('#startEventTime').val(start.format("HH:mm"));
-          $('#endEventTime').val(end.format("HH:mm"));
+          $('#startEventTime').val(start.utc().format("HH:mm"));
+          $('#endEventTime').val(end.utc().format("HH:mm"));
           $('#startEventTimeISO').val(start.utc().locale('en').format(RFC2822));
           $('#endEventTimeISO').val(end.utc().locale('en').format(RFC2822));
           $('#isModify').val("None");
@@ -197,8 +224,8 @@
           $('#colleurName').val(event.colleurName);
           $('#sexeInput').val(event.sexeInput);
           $('#matiereInput').val(event.matiereInput);
-          $('#startEventTime').val(event.start.format("HH:mm"));
-          $('#endEventTime').val(event.end.format("HH:mm"));
+          $('#startEventTime').val(event.start.utc().format("HH:mm"));
+          $('#endEventTime').val(event.end.utc().format("HH:mm"));
           $('#startEventTimeISO').val(event.start);
           $('#endEventTimeISO').val(event.end);
           $('#isModify').val(event._id);
@@ -207,6 +234,10 @@
       },
       editable: true
       });
+      
+      $("#calendar").fullCalendar('renderEvents', events);
+      $("#calendar").fullCalendar('unselect');
+      
       $('#submitButton').on('click', function(e){
         // We don't want this to act as a link so cancel the link action
         e.preventDefault();
@@ -223,10 +254,10 @@
       
       function doSubmit(){
         $("#createEventModal").modal('hide');
-        var startMoment = $.fullCalendar.moment($('#startEventTimeISO').val());
-        var endMoment = $.fullCalendar.moment($('#endEventTimeISO').val());
-        startMoment.time($('#startEventTime').val());
-        endMoment.time($('#endEventTime').val());
+        var startMoment = $.fullCalendar.moment().utc($('#startEventTimeISO').val());
+        var endMoment = $.fullCalendar.moment().utc($('#endEventTimeISO').val());
+        startMoment.utc().time($('#startEventTime').val());
+        endMoment.utc().time($('#endEventTime').val());
         endMoment.date(startMoment.date());
         
         if(startMoment.isAfter(endMoment)){
@@ -249,6 +280,29 @@
       }
     });
       
+    function post2save(obj){
+      $.post('./saveNewColleurs19241070', obj, function(data) {
+        alert(data);
+      });
+    }
+      
+    function getJSON(url) {
+        var resp ;
+        var xmlHttp ;
+
+        resp  = '' ;
+        xmlHttp = new XMLHttpRequest();
+
+        if(xmlHttp != null)
+        {
+            xmlHttp.open( "GET", url, false );
+            xmlHttp.send( null );
+            resp = xmlHttp.responseText;
+        }
+
+        return resp ;
+    }
+      
     function getMorMme(str){
       switch(str){
         case "Masculin":
@@ -258,28 +312,6 @@
         default:
           return "";
       }
-    }
-      
-    function post(path, parameters) {
-      var form = $('<form></form>');
-
-      form.attr("method", "POST");
-      form.attr("action", path);
-
-      $.each(parameters, function(key, value) {
-          var field = $('<input></input>');
-
-          field.attr("type", "hidden");
-          field.attr("name", key);
-          field.attr("value", value);
-
-          form.append(field);
-      });
-
-      // The form needs to be a part of the document in
-      // order for us to be able to submit it.
-      $(document.body).append(form);
-      form.submit();
     }
     </script>
     

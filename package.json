@@ -14,9 +14,8 @@
   "license": "MIT",
   "homepage": "http://sauve-qui-peut.rf.gd",
   "dependencies": {
-    "request": "^2.72.0",
+    "request": "*",
     "express": "*",
-    "bootstrap": "*",
     "uuid": "*",
     "moment": "*",
     "better-sqlite3": "*",

@@ -2,7 +2,6 @@ dependencies:
   better-sqlite3: 4.1.4
   body-parser: 1.18.3
   bootbot: 1.0.16
-  bootstrap: 4.1.3
   cloudinary: 1.11.0
   express: 4.16.3
   fs-extra: 7.0.0
@@ -123,15 +122,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-nwxf6vdcLcytdXytH3mgzujaEtb63h78VPXsoAImn96rthz/ASIrShsX/Np5yoWMipugh/8Iq4wLcZQ2GjvGJg==
-  /bootstrap/4.1.3:
-    dev: false
-    engines:
-      node: '>=6'
-    peerDependencies:
-      jquery: 1.9.1 - 3
-      popper.js: ^1.14.3
-    resolution:
-      integrity: sha512-rDFIzgXcof0jDyjNosjv4Sno77X4KuPeFxG2XZZv1/Kc8DRVGVADdoQyyOVDwPqL36DDmtCQbrpMCqvpPLJQ0w==
   /bytes/3.0.0:
     dev: false
     engines:
@@ -936,7 +926,6 @@ specifiers:
   better-sqlite3: '*'
   body-parser: '*'
   bootbot: '*'
-  bootstrap: '*'
   cloudinary: '*'
   express: '*'
   fs-extra: '*'
@@ -945,5 +934,5 @@ specifiers:
   node-fetch: '*'
   path: '*'
   remove-accents: '*'
-  request: ^2.72.0
+  request: '*'
   uuid: '*'
