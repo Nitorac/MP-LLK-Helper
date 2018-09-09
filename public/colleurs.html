@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="fr">
+  <head>    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/d74f7a5f-e192-4870-887c-0722204c2aa3%2F28795726_593782034313705_7768182477461168594_n.png?1536417717898" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!-- FullCalendar stylesheets -->
+    <link rel="stylesheet" href="./fullcalendar/fullcalendar.css"/>
+    <link rel="stylesheet" href="./fullcalendar/fullcalendar.print.css" media="print"/>
+    
+    <title>MP - Helper</title>
+  </head>
+  <body>
+    <!-- FullCalendar scripts -->
+    <script src="./fullcalendar/jquery.js"></script>
+    <script src="./fullcalendar/jquery-ui.js"></script>
+    <script src="./fullcalendar/moment.js"></script>
+    <script src="./fullcalendar/fullcalendar.js"></script>
+    <script src="./fullcalendar/locale/fr.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #6556e1;">
+      <a class="navbar-brand" href="#">
+        <img src="https://cdn.glitch.com/d74f7a5f-e192-4870-887c-0722204c2aa3%2F28795726_593782034313705_7768182477461168594_n.png?1536417717898" width="30" height="30" class="d-inline-block align-top" alt="">
+        MP - Helper
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./">Accueil  <span class="fa fa-home"></span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Colleurs  <span class="sr-only">(current)</span><span class="fa fa-user"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Planning  <span class="fa fa-calendar"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Élèves <span class="fa fa-graduation-cap"></span></a>
+          </li>
+        </ul>
+      </div>
+      <div class="my-2 my-lg-0">
+        <button class="btn btn-success" type="button" id="validate">Valider</button>
+      </div>
+    </nav>
+    
+    <div id="header-text">
+      <h4 id="main-title" style="margin-bottom: 75px;"></h4>
+    </div>
+    <div id="calendar"></div>
+    
+    <div id="createEventModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="titleForm">Si vous voyez ça, une erreur est survenue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                <div id="modalBody" class="modal-body">
+                  
+                    <div class="form-group form-inline">
+                        <div class="input-group date">
+                            <label class="col-form-label" style="margin-right: 5px;">Horaire (début - fin) : </label>
+                            <input type="text" id="startEventTime" class="form-control" placeholder="Heure de début (HH:mm)">
+                            <input type="hidden" id="startEventTimeISO" name="startEventTimeISO" />  
+                            <input type="text" id="endEventTime" class="form-control" placeholder="Heure de fin (HH:mm)">
+                            <input type="hidden" id="endEventTimeISO" name="endEventTimeISO" />
+                        </div>
+                    </div>    
+                  
+                    <div class="form-group">
+                        <label for="colleurName" class="col-form-label">Nom du colleur(se):</label>
+                        <input class="form-control" type="text" placeholder="Nom du colleur(se)" id="colleurName">
+                    </div>
+                  
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Repère du colleur(se) (A ou 3 ou *) :</label>
+                        <input class="form-control" type="text" placeholder="Repère du colleur(se) (A ou 3 ou *)" id="colleurRepere">
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="sexeInput" class="col-form-label">Sexe:</label>
+                      <select class="form-control" id="sexeInput">
+                        <option>Masculin</option>
+                        <option>Féminin</option>
+                      </select>
+                    </div>
+                  
+                      <div class="form-group">
+                        <input type="hidden" id="isModify" name="isModify" />
+                        <label for="matiereInput" class="col-form-label">Matière:</label>
+                        <select class="form-control" id="matiereInput">
+                          <option>Maths</option>
+                          <option>Physique</option>
+                          <option>Anglais</option>
+                          <option>Allemand</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger mr-auto" data-dismiss="modal" id="deleteColleur">Supprimer le colleur</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    var RFC2822 = 'ddd, DD MMM YYYY HH:mm:ss [GMT]';
+    $("#validate").on("click", function(){
+      var events = $('#calendar').fullCalendar('clientEvents');
+      var root = {};
+      for(var i = 0; i < events.length; i++){
+        var e = events[i];
+        root[e.repere] = {};
+        var curElem = root[e.repere];
+        curElem.Matiere = e.matiereInput;
+        curElem.Sexe = e.sexeInput.charAt(0);
+        curElem.Nom = e.colleurName;
+        curElem.DureeEpoch = e.end.unix() - e.start.unix();
+        curElem.Epoch = e.start.unix() - 345600; //349200 = 5 janvier 1970 à 1H du matin (ref du helper)
+      }
+      
+      console.log(root);
+      //post("./saveNewColleurs19241070", {"pwd":"123", "json":});
+      $.post('./saveNewColleurs19241070',
+          {
+              pwd: '123',
+              json: JSON.stringify(root)
+          }, function(data) {
+              alert(data);
+      });
+    });
+    $(document).ready(function() {
+      $("#deleteColleur").on("click", function(){
+        deleteEvent($('#isModify').val());
+      });
+      
+      $("#calendar").fullCalendar({
+      locale: 'fr',
+      header: {
+        right: 'agendaWeek',
+        left: 'title'
+      },
+      allDaySlot: false,
+      weekends: false,
+      columnFormat: "dddd",
+      selectOverlap: false,
+      slotEventOverlap: false,
+      slotLabelFormat: "H[H](mm)",
+      defaultView: 'agendaWeek',
+      defaultDate: '1970-01-10',
+      minTime: "00:00:00",
+      maxTime: "23:00:00",
+      navLinks: true, // can click day/week names to navigate views
+      selectable: true,
+      titleFormat: "[Entrez les colleurs et leurs horaires]",
+      select: function (start, end, jsEvent) {
+          $('#colleurName').val('');
+          $('#titleForm').html("Ajouter un colleur(se)");
+          $('#startEventTime').val(start.format("HH:mm"));
+          $('#endEventTime').val(end.format("HH:mm"));
+          $('#startEventTimeISO').val(start.utc().locale('en').format(RFC2822));
+          $('#endEventTimeISO').val(end.utc().locale('en').format(RFC2822));
+          $('#isModify').val("None");
+          $('#colleurRepere').val('');
+          $('#createEventModal').modal('show');
+      },
+      eventDrop: function (event, delta, revertFunc) {
+          if(event.start.date() != event.end.date()){
+            revertFunc();
+          }
+      },
+
+      //When u resize an event in the calendar do the following:
+      eventResize: function (event, delta, revertFunc) {
+          if(event.start.date() != event.end.date()){
+            revertFunc();
+          }
+      },
+
+      //Activating modal for 'when an event is clicked'
+      eventClick: function(event) {
+          $('#titleForm').html("Modifier un colleur(se)");
+          $('#colleurName').val(event.colleurName);
+          $('#sexeInput').val(event.sexeInput);
+          $('#matiereInput').val(event.matiereInput);
+          $('#startEventTime').val(event.start.format("HH:mm"));
+          $('#endEventTime').val(event.end.format("HH:mm"));
+          $('#startEventTimeISO').val(event.start);
+          $('#endEventTimeISO').val(event.end);
+          $('#isModify').val(event._id);
+          $('#colleurRepere').val(event.repere);
+          $('#createEventModal').modal("show");
+      },
+      editable: true
+      });
+      $('#submitButton').on('click', function(e){
+        // We don't want this to act as a link so cancel the link action
+        e.preventDefault();
+        doSubmit();
+      });
+      
+      function deleteEvent(eventId){
+          if(eventId != "None"){
+            $('#calendar').fullCalendar('removeEvents', eventId);
+            $('#calendar').fullCalendar('rerenderEvents');
+          }
+          $("#createEventModal").modal('hide');
+      }
+      
+      function doSubmit(){
+        $("#createEventModal").modal('hide');
+        var startMoment = $.fullCalendar.moment($('#startEventTimeISO').val());
+        var endMoment = $.fullCalendar.moment($('#endEventTimeISO').val());
+        startMoment.time($('#startEventTime').val());
+        endMoment.time($('#endEventTime').val());
+        endMoment.date(startMoment.date());
+        
+        if(startMoment.isAfter(endMoment)){
+          var temp = startMoment;
+          startMoment = endMoment;
+          endMoment = temp;
+        }
+        
+        $("#calendar").fullCalendar('renderEvent',{
+            title: getMorMme($('#sexeInput').val()) + $('#colleurName').val(),
+            colleurName: $('#colleurName').val(),
+            sexeInput: $('#sexeInput').val(),
+            matiereInput: $('#matiereInput').val(),
+            repere: $('#colleurRepere').val(),
+            start: startMoment,
+            end: endMoment
+        },true);
+
+        deleteEvent($('#isModify').val());
+      }
+    });
+      
+    function getMorMme(str){
+      switch(str){
+        case "Masculin":
+          return "M. ";
+        case "Féminin":
+          return "Mme. ";
+        default:
+          return "";
+      }
+    }
+      
+    function post(path, parameters) {
+      var form = $('<form></form>');
+
+      form.attr("method", "POST");
+      form.attr("action", path);
+
+      $.each(parameters, function(key, value) {
+          var field = $('<input></input>');
+
+          field.attr("type", "hidden");
+          field.attr("name", key);
+          field.attr("value", value);
+
+          form.append(field);
+      });
+
+      // The form needs to be a part of the document in
+      // order for us to be able to submit it.
+      $(document.body).append(form);
+      form.submit();
+    }
+    </script>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
