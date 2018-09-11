@@ -68,13 +68,18 @@ app.post('/saveNewColleurs19241070', (req, res) => {
     res.send('Mauvais mot de passe !<br>Fichier non mis à jour !');
     return;
   }
-  fs.writeFile('./.data/colleurs.json', JSON.stringify(JSON.parse(data.json)), 'utf-8', function (err) {
-      if (err) {
-        res.send('Une erreur est survenue : ' + err);
-        throw err;
-      }
-      res.send('Robot mis à jour !');
-  });
+  
+  try{  
+    fs.writeFile('./.data/colleurs.json', JSON.stringify(JSON.parse(data.json)), 'utf-8', function (err) {
+        if (err) {
+          res.send('Une erreur est survenue : ' + err);
+          throw err;
+        }
+        res.send('Robot mis à jour !');
+    });  
+  }catch(err){
+    res.send('Une erreur est survenue : ' + err);
+  }
 });
 
 app.post('/webhook', (req, res) => {
