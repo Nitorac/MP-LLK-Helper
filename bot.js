@@ -48,7 +48,7 @@ bot.setGetStartedButton((payload, chat, data) => {
     chat.say(`Pour voir la liste des commandes, tapez 'aide' ou 'help'`);
 });
 
-app.get('/webhooks', (req, res) => {
+app.get('/webhook', (req, res) => {
     if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === process.env.VERIFY_TOKEN) {
       console.log('Token validé !')
       res.status(200).send(req.query['hub.challenge']);
@@ -64,19 +64,20 @@ app.get('/colleursJSON', (req, res) => {
 
 app.post('/saveNewColleurs19241070', (req, res) => {
   var data = req.body;
-  /*if(data.pwd != process.env.PWD){
-  
-  }*/
+  if(data.pwd != process.env.PWD){
+    res.send('Mauvais mot de passe !<br>Fichier non mis à jour !');
+    return;
+  }
   fs.writeFile('./.data/colleurs.json', JSON.stringify(JSON.parse(data.json)), 'utf-8', function (err) {
       if (err) {
-        res.sendStatus(403);
+        res.send('Une erreur est survenue : ' + err);
         throw err;
       }
-      res.sendStatus(200);
+      res.send('Robot mis à jour !');
   });
 });
 
-app.post('/webhooks', (req, res) => {
+app.post('/webhook', (req, res) => {
   var data = req.body;
   if (data.object !== 'page') {
     return;
