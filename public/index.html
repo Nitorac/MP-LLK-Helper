@@ -9,7 +9,51 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="https://cdn.glitch.com/d74f7a5f-e192-4870-887c-0722204c2aa3%2F28795726_593782034313705_7768182477461168594_n.png?1536417717898" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    
+    <style>
+        :root {
+      --jumbotron-padding-y: 1rem;
+    }
 
+    .jumbotron {
+      padding-top: var(--jumbotron-padding-y);
+      padding-bottom: var(--jumbotron-padding-y);
+      margin-bottom: 0;
+      background-color: #fff;
+    }
+    @media (min-width: 768px) {
+      .jumbotron {
+        padding-top: calc(var(--jumbotron-padding-y) * 2);
+        padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+      }
+    }
+
+    .jumbotron p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jumbotron-heading {
+      font-weight: 300;
+    }
+
+    .jumbotron .container {
+      max-width: 80rem;
+    }
+
+    footer {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    footer p {
+      margin-bottom: .25rem;
+    }
+
+    .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+    </style>
+    
+    
     <title>MP - Helper</title>
   </head>
   <body>    
@@ -31,24 +75,96 @@
             <a class="nav-link" href="./colleurs.html">Colleurs  <span class="fa fa-user"></span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Planning  <span class="fa fa-calendar"></span></a>
+            <a class="nav-link" href="#">Élèves <span class="fa fa-graduation-cap"></span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Élèves <span class="fa fa-graduation-cap"></span></a>
+            <a class="nav-link" href="#">Planning  <span class="fa fa-calendar"></span></a>
           </li>
         </ul>
       </div>
-    </nav>
-    
-    
-    
-    
-    <meta http-equiv="refresh" content="0;URL='./colleurs.html'" />
-    
-    
-    
-    
-    
+    </nav>    
+    <main role="main" class="bg-dark">
+    <section class="jumbotron text-center bg-dark">
+      <div class="album py-5 bg-dark">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 text-white bg-danger box-shadow">
+                <div class="card-header" style="font-family: 'Roboto', sans serif;font-weight:10;font-size: 30px;letter-spacing: 0.2em;line-height: 1em;">COLLEURS</div>
+                <div class="card-header">
+                  <span class="fas fa-exclamation-triangle" style="font-size: 5rem; margin-bottom: 10px;"></span>
+                  <br><span>f</span>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">Dans cette section, vous devez entrer le planning hebdomadaire des colleurs en leur assignant à chacun un repère.</p>
+                </div>
+                <div class="card-footer d-flex flex-column">
+                    <div class="p-2"><samp>Nombre de colles par semaine : </samp><samp id="collePerSem">60</samp></div>
+                    <div class="p-2"><samp>Jour avec le plus de colles : </samp><samp id="dayMaxColle">60</samp></div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-info">Voir la section</button>
+                  </div>
+                  <small class="text-gray">9 mins</small>
+                </div>
+                </div>
+              </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-12">
+              <div class="card mb-12 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </main>
+    <script type="text/javascript">
+      var CARDS = ["colleursId", "elevesId", "planningId"];
+      function setCardSuccess()
+    </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
