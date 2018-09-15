@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./bootstrap/darkly-flat.css">
     <link rel="icon" type="image/png" href="https://cdn.glitch.com/d74f7a5f-e192-4870-887c-0722204c2aa3%2F28795726_593782034313705_7768182477461168594_n.png?1536417717898" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
@@ -94,9 +94,9 @@
         <button class="btn btn-success" type="button" id="validate" style="margin-left: 5px;">Valider</button>
       </div>
     </nav>
-    <main role="main" class="bg-dark">
-    <section class="jumbotron text-center bg-dark">
-      <div class="album py-5 bg-dark">
+    <main role="main" class="bg-light">
+    <section class="jumbotron text-cente bg-light">
+      <div class="album py-5 bg-light">
         <div class="container">
           <div id="calendar"></div>
         </div>
@@ -121,6 +121,7 @@
                   </div>
                 </div>
                 <input type="hidden" id="jsonToPass" name="jsonToPass" />
+              <input type="hidden" id="hasToReload" name="hasToReload" />
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-primary" id="pwdValidate">Envoyer</button>
@@ -249,6 +250,7 @@
       console.log("Objet final : " + JSON.stringify(root));
       
       $('#jsonToPass').val(JSON.stringify(root));
+      $('#hasToReload').val('false');
       $("#pwdModal").modal('show');
     });
       
@@ -258,6 +260,11 @@
         $('#pwdValidate').off().on('click', function(){
           if(!hasErrors("pwdModal")){
             $("#pwdModal").modal('hide');
+            if($("#hasToReload").val() == "true"){
+              setTimeout(function(){
+                 window.location.reload(1);
+              }, 200);
+            }
             post2save({json: $('#jsonToPass').val(), pwd: $('#pwdInput').val()});
           }
         });
@@ -280,12 +287,9 @@
       $("#deleteAll").on("click", function(){
         var confirmation = prompt('Êtes-vous vraiment sûr de vouloir faire ça ? (Oui/Non)');
         if(confirmation.toLowerCase() == "oui"){
+          $('#hasToReload').val('true');
           $('#jsonToPass').val(JSON.stringify({}));
           $("#pwdModal").modal('show');
-          
-          setTimeout(function(){
-             window.location.reload(1);
-          }, 1000);
         }
       }); 
       
@@ -309,7 +313,7 @@
             
       $("#calendar").fullCalendar({
       locale: 'fr',
-      //themeSystem: 'jquery-ui',
+      //themeSystem: 'bootstrap3',
       header: {
         right: 'agendaWeek',
         left: 'title'
@@ -331,8 +335,6 @@
       select: function (start, end, jsEvent) {
           $('#colleurName').val('');
           $('#titleForm').html("Ajouter un colleur(se)");
-          $("#matiereInput")[0].selectedIndex = 0;
-          $("#sexeInput")[0].selectedIndex = 0;
           $('#startEventTime').val(start.utc().format("HH:mm"));
           $('#endEventTime').val(end.utc().format("HH:mm"));
           $('#dayInput').val(capitalize(start.utc().locale('fr').format("dddd")))
@@ -387,8 +389,8 @@
       function doSubmit(){
         var startMoment = $.fullCalendar.moment($('#startEventTimeISO').val(), RFC2822);
         var endMoment = $.fullCalendar.moment($('#endEventTimeISO').val(), RFC2822);
-        startMoment.utc().time($('#startEventTime').val());
-        endMoment.utc().time($('#endEventTime').val());
+        startMoment.locale('fr').utc().time($('#startEventTime').val());
+        endMoment.locale('fr').utc().time($('#endEventTime').val());
         endMoment.date(startMoment.date());
         
         if(startMoment.isAfter(endMoment)){
