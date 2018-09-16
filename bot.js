@@ -62,6 +62,10 @@ app.get('/colleursJSON', (req, res) => {
   res.sendFile(__dirname + "/.data/colleurs.json"); 
 });
 
+app.get('/elevesJSON', (req, res) => {
+  res.sendFile(__dirname + "/.data/eleves.json"); 
+});
+
 app.post('/saveNewColleurs19241070', (req, res) => {
   var data = req.body;
   if(data.pwd != process.env.PWD){
@@ -87,7 +91,7 @@ app.post('/webhook', (req, res) => {
   if (data.object !== 'page') {
     return;
   }
-
+  console.log(JSON.stringify(data));
   bot.handleFacebookData(data);
   
   res.sendStatus(200);

@@ -210,6 +210,8 @@
                           <option>Physique</option>
                           <option>Anglais</option>
                           <option>Allemand</option>
+                          <option>Arabe</option>
+                          <option>Espagnol</option>
                         </select>
                       </div>
                 </div>
@@ -327,7 +329,7 @@
       slotLabelFormat: "H[H](mm)",
       defaultView: 'agendaWeek',
       defaultDate: '1970-01-10',
-      minTime: "07:00:00",
+      minTime: "09:00:00",
       maxTime: "23:00:00",
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
@@ -389,8 +391,8 @@
       function doSubmit(){
         var startMoment = $.fullCalendar.moment($('#startEventTimeISO').val(), RFC2822);
         var endMoment = $.fullCalendar.moment($('#endEventTimeISO').val(), RFC2822);
-        startMoment.locale('fr').utc().time($('#startEventTime').val());
-        endMoment.locale('fr').utc().time($('#endEventTime').val());
+        startMoment.locale('fr').utc().time($('#startEventTime').val().trim());
+        endMoment.locale('fr').utc().time($('#endEventTime').val().trim());
         endMoment.date(startMoment.date());
         
         if(startMoment.isAfter(endMoment)){
@@ -399,14 +401,14 @@
           endMoment = temp;
         }
         
-        startMoment.day($('#dayInput').val());
-        endMoment.day($('#dayInput').val());
+        startMoment.day($('#dayInput').val().trim());
+        endMoment.day($('#dayInput').val().trim());
         $("#calendar").fullCalendar('renderEvent',{
-            title: "[" + $('#colleurRepere').val() + "] " + $('#colleurName').val(),
-            colleurName: $('#colleurName').val(),
+            title: "[" + $('#colleurRepere').val().trim() + "] " + $('#colleurName').val().trim(),
+            colleurName: $('#colleurName').val().trim(),
             sexeInput: $('#sexeInput').val(),
             matiereInput: $('#matiereInput').val(),
-            repere: $('#colleurRepere').val(),
+            repere: $('#colleurRepere').val().trim(),
             start: startMoment,
             end: endMoment
         },true);
