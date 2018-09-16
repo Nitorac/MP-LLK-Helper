@@ -1,14 +1,15 @@
 'use strict';
+var fs = require('fs');
+
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 var utils = require('./utils.js');
+
 var exosColleExec = require('./exosColleExecutor.js');
 
 const request = require('request');
 const path = require('path');
-
-var fs = require('fs');
 
 const BootBot = require('bootbot');
 

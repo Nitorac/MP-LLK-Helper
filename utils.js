@@ -1,9 +1,42 @@
 'use strict';
-var planning = require('./.data/planning.json');
+var fs = require('fs');
 
 const days = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
 const db_table= "CREATE TABLE `registry` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `SenderID` text NOT NULL, `Path` text NOT NULL,`Title` text NOT NULL,`Epoch` INTEGER NOT NULL,`MondayEpoch` INTEGER NOT NULL,`Infos` text NOT NULL)";
 const puce_rnd_colors = ["https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F1.png?1521926735486","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F0.png?1521926735774","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F2.png?1521926735940","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F4.png?1521926736080","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F6.png?1521926736192","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F5.png?1521926736356","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F3.png?1521926736490","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F7.png?1521926736638"];
+
+function getPlanning(){
+  if(!fs.exists("./.data/planning.json")){
+    fs.writeFileSync("./.data/planning.json", "{}", function(err) {
+      if(err) {return console.log(err);} 
+      console.log("Fichier planning.json crée !");
+    }); 
+  }
+
+  return require('./.data/planning.json');
+}
+
+function getEleves(){
+  if(!fs.exists("./.data/eleves.json")){
+    fs.writeFileSync("./.data/eleves.json", "{}", function(err) {
+      if(err) {return console.log(err);} 
+      console.log("Fichier eleves.json crée !");
+    }); 
+  }
+  
+  return require('./.data/eleves.json');
+}
+
+function getColleurs(){
+  if(!fs.exists("./.data/colleurs.json")){
+    fs.writeFileSync("./.data/colleurs.json", "{}", function(err) {
+      if(err) {return console.log(err);} 
+      console.log("Fichier colleurs.json crée !");
+    }); 
+  }
+  
+  return require('./.data/colleurs.json');
+}
 
 function nowEpochGmt(){
   return parseInt((Date.now() - new Date(Date.now()).getTimezoneOffset()*60000)/1000);
@@ -35,7 +68,7 @@ function plural(n, str, exceptPlur){
 
 //offset=0 => current Week Monday in planning, if exists;  offset=1 => next Week Monday
 function getMondayEpoch(offset){
-  var epochs = Object.keys(planning).map(Number).sort(function(a,b){
+  var epochs = Object.keys(getPlanning()).map(Number).sort(function(a,b){
   	return a - b;
   });
   var currentGmt = nowEpochGmt();  
@@ -117,5 +150,8 @@ module.exports = {
   getRandomNoFollow: getRandomNoFollow,
   getFormattedDay: getFormattedDay,
   plural: plural,
-  capitalize: capitalize
+  capitalize: capitalize,
+  planning: getPlanning,
+  colleurs: getColleurs,
+  eleves: getEleves
 }

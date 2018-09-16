@@ -437,8 +437,11 @@
             xmlHttp.send( null );
             resp = xmlHttp.responseText;
         }
-
-        return resp ;
+        
+        if(resp.length == 0){
+          return "{}";
+        }
+        return resp;
     }
       
     function getMorMme(str){

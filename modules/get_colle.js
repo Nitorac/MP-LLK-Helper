@@ -3,9 +3,6 @@ var low = require('lowdb');
 var FileSync = require('lowdb/adapters/FileSync');
 var db = low(new FileSync('.data/savedUsers.json'));
 
-var colleurs = require('../.data/colleurs.json');
-var eleves = require('../.data/eleves.json');
-var planning = require('../.data/planning.json');
 var executor = require('../planningExecutor.js');
 var utils = require('../utils.js');
 var accents = require('remove-accents');
@@ -88,7 +85,7 @@ module.exports = (bot) => {
   function showColle(chatconv, payload, n, name, otherName){
     chatconv.say(`Veuillez patienter ...`);
     try {
-      var result = executor.getnNextColles(eleves[name].Colle_groupe, n);
+      var result = executor.getnNextColles(utils.eleves()[name].Colle_groupe, n);
     }catch(error){
       chatconv.say(`Une erreur est survenue : ${error}\n\nVeuillez signaler cette erreur à Tony Ranini.`);
       return;
@@ -97,7 +94,7 @@ module.exports = (bot) => {
       chatconv.say(`Je ne vois pas d'autre colle dans la base de données.\n\nSi c'est une situation anormale, veuillez contacter Tony Ranini`);
       return;
     }
-    var message = (otherName === undefined) ? utils.plural(n, `Votre prochaine colle est :\n`, `Vos ${n} prochaines colles sont :\n`) : utils.plural(n, `La prochaine colle de ${eleves[name].Prenom} est :\n`, `Les ${n} prochaines colles de ${eleves[name].Prenom} sont :\n`);
+    var message = (otherName === undefined) ? utils.plural(n, `Votre prochaine colle est :\n`, `Vos ${n} prochaines colles sont :\n`) : utils.plural(n, `La prochaine colle de ${utils.eleves()[name].Prenom} est :\n`, `Les ${n} prochaines colles de ${utils.eleves()[name].Prenom} sont :\n`);
     for(var i = 0;i < result.length;i++){
       var c = result[i];
       var start = new Date(0);
@@ -121,7 +118,7 @@ module.exports = (bot) => {
         convo.getUserProfile().then((user) => {
           db.set(payload.sender.id, actName).write();
           var json = db.get(payload.sender.id).value();
-          var firstName = eleves[actName].Prenom;
+          var firstName = utils.eleves()[actName].Prenom;
           convo.say(`Salut ${firstName}, je vous ai trouvé dans la base de données !\nJe me souviendrai de votre nom.`);
           convo.end();
           setTimeout(function(){

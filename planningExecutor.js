@@ -1,11 +1,8 @@
 'use strict';
-var colleurs = require('./.data/colleurs.json');
-var eleves = require('./.data/eleves.json');
-var planning = require('./.data/planning.json');
 var utils = require('./utils.js');
 
 function checkName(request){
-  return eleves.hasOwnProperty(request);
+  return utils.eleves().hasOwnProperty(request);
 }
 
 function getClonedStore(jsonObj){
@@ -13,7 +10,7 @@ function getClonedStore(jsonObj){
 }
 
 function getCellFromEpoch(epoch,colle_gpe){
-   return getClonedStore(planning)[epoch][colle_gpe];
+   return getClonedStore(utils.planning())[epoch][colle_gpe];
 }
 
 function getnNextColles(colle_gpe, n, offset, res){
@@ -52,10 +49,13 @@ function getnNextColles(colle_gpe, n, offset, res){
 }
 
 function getSortedWeekColles(epoch, gpe){
-  var cells = getCellFromEpoch(epoch, gpe).split("-");
-  var copiedColleursStore = getClonedStore(colleurs);
-  
-  return [copiedColleursStore[cells[0]], copiedColleursStore[cells[1]]].sort(function (a,b){
+  var reperes = getCellFromEpoch(epoch, gpe).split('-');
+  var copiedColleursStore = getClonedStore(utils.colleurs());
+  var colles = [];
+  reperes.forEach(function(el){
+    colles.push(copiedColleursStore[el]);
+  });
+  return colles.sort(function (a,b){
     return (a.Epoch > b.Epoch) ? 1 : -1;
   });
 }
