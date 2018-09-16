@@ -418,7 +418,7 @@
     });
       
     function post2save(obj){
-      $.post('./saveNewColleurs19241070', obj, function(data) {
+      $.post('./saveColleurs', obj, function(data) {
         $('#returnText').html(data);
         $("#returnModal").modal('show');
       });

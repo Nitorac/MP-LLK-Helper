@@ -67,7 +67,7 @@ app.get('/elevesJSON', (req, res) => {
   res.sendFile(__dirname + "/.data/eleves.json"); 
 });
 
-app.post('/saveNewColleurs19241070', (req, res) => {
+app.post('/saveColleurs', (req, res) => {
   var data = req.body;
   if(data.pwd != process.env.PWD){
     res.send('Mauvais mot de passe !<br>Fichier non mis à jour !');
@@ -81,6 +81,7 @@ app.post('/saveNewColleurs19241070', (req, res) => {
           throw err;
         }
         res.send('Robot mis à jour !');
+        utils.colleurs(true);
     });  
   }catch(err){
     res.send('Une erreur est survenue : ' + err);
@@ -92,7 +93,6 @@ app.post('/webhook', (req, res) => {
   if (data.object !== 'page') {
     return;
   }
-  console.log(JSON.stringify(data));
   bot.handleFacebookData(data);
   
   res.sendStatus(200);

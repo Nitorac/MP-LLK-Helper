@@ -1,41 +1,51 @@
 'use strict';
 var fs = require('fs');
 
+var planning = {};
+var eleves = {};
+var colleurs = {};
+
 const days = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
 const db_table= "CREATE TABLE `registry` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `SenderID` text NOT NULL, `Path` text NOT NULL,`Title` text NOT NULL,`Epoch` INTEGER NOT NULL,`MondayEpoch` INTEGER NOT NULL,`Infos` text NOT NULL)";
 const puce_rnd_colors = ["https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F1.png?1521926735486","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F0.png?1521926735774","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F2.png?1521926735940","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F4.png?1521926736080","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F6.png?1521926736192","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F5.png?1521926736356","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F3.png?1521926736490","https://cdn.glitch.com/5189a7e5-bc3d-4b91-bd26-dfeb307c812e%2F7.png?1521926736638"];
 
-function getPlanning(){
-  if(!fs.exists("./.data/planning.json")){
-    fs.writeFileSync("./.data/planning.json", "{}", function(err) {
-      if(err) {return console.log(err);} 
-      console.log("Fichier planning.json crée !");
-    }); 
-  }
-
-  return require('./.data/planning.json');
-}
-
-function getEleves(){
-  if(!fs.exists("./.data/eleves.json")){
-    fs.writeFileSync("./.data/eleves.json", "{}", function(err) {
-      if(err) {return console.log(err);} 
-      console.log("Fichier eleves.json crée !");
-    }); 
+function getPlanning(update){
+  try{
+    if(planning == undefined || Object.keys(planning).length == 0 || update == true){
+      planning = require(__dirname + '/.data/planning.json');
+      console.log("Planning : " + JSON.stringify(planning).slice(0, 20));
+    }
+  }catch(e){
+    console.err(e);
   }
   
-  return require('./.data/eleves.json');
+  return planning;
 }
 
-function getColleurs(){
-  if(!fs.exists("./.data/colleurs.json")){
-    fs.writeFileSync("./.data/colleurs.json", "{}", function(err) {
-      if(err) {return console.log(err);} 
-      console.log("Fichier colleurs.json crée !");
-    }); 
+function getEleves(update){
+  try{
+    if(eleves == undefined || Object.keys(eleves).length == 0 || update == true){
+      eleves = require(__dirname + '/.data/eleves.json');
+      console.log("Eleves : " + JSON.stringify(eleves).slice(0, 20));
+    }
+  }catch(e){
+    console.err(e);
   }
   
-  return require('./.data/colleurs.json');
+  return eleves;
+}
+
+function getColleurs(update){
+  try{
+    if(colleurs == undefined || Object.keys(colleurs).length == 0 || update == true){
+      colleurs = require(__dirname + '/.data/colleurs.json');
+      console.log("Colleurs : " + JSON.stringify(colleurs).slice(0, 20));
+    }
+  }catch(e){
+    console.err(e);
+  }
+  
+  return colleurs;
 }
 
 function nowEpochGmt(){
