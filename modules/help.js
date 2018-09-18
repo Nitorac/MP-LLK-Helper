@@ -1,7 +1,7 @@
 'use strict';
 
 const topics = {
- "replaceQuest": "Appuyez sur la commande qui vous intéresse",
+ "replaceQuest": "Appuyez sur la commande qui vous intéresse\n(Envoyer Fin pour quitter l'aide)",
  "prologue": "Tapez sur la commande qui vous intéresse :\n\n ↬ colle\n ↬ exos\n ↬ site\n ↬ gif\n ↬ source\n ↬ fin",
  "layer": {
   "Colle": {

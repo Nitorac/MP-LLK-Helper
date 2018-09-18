@@ -61,7 +61,7 @@ module.exports = (bot) => {
   
   function processHear(payload, chat, n, name, hasToDefine, otherNameToDisplay){
     chat.conversation((convo) => {
-      showColle(convo, payload, n, "Toulemonde", otherNameToDisplay, true);
+      showColle(convo, payload, n, "Ranini", otherNameToDisplay, true);
     });
     return;
     if(name == undefined){
