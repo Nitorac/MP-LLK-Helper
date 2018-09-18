@@ -60,6 +60,10 @@ module.exports = (bot) => {
   });
   
   function processHear(payload, chat, n, name, hasToDefine, otherNameToDisplay){
+    chat.conversation((convo) => {
+      showColle(convo, payload, n, "Toulemonde", otherNameToDisplay, true);
+    });
+    return;
     if(name == undefined){
       chat.conversation((convo) => {
         convo.say(`Je ne trouve pas votre nom dans la base de données...`);
@@ -82,10 +86,11 @@ module.exports = (bot) => {
     }
   }
   
-  function showColle(chatconv, payload, n, name, otherName){
+  function showColle(chatconv, payload, n, name, otherName, test){
     chatconv.say(`Veuillez patienter ...`);
     try {
       var result = executor.getnNextColles(utils.eleves()[name].Colle_groupe, n);
+      console.log(result);
     }catch(error){
       chatconv.say(`Une erreur est survenue : ${error}\n\nVeuillez signaler cette erreur à Tony Ranini.`);
       return;
@@ -106,7 +111,7 @@ module.exports = (bot) => {
           " à " + formattedHour(end.getUTCHours(), end.getUTCMinutes()) + " (" + c.Matiere + ")";
       message+=sub;
     }
-    chatconv.say(message, {typing: true});
+    chatconv.say(message + ((test != undefined && test) ? "\n\nATTENTION Colles d'exemples !" : ""), {typing: true});
   }
   
   const askName = (convo, n, otherName, redirect) => {

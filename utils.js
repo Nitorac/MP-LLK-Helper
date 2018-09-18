@@ -13,7 +13,6 @@ function getPlanning(update){
   try{
     if(planning == undefined || Object.keys(planning).length == 0 || update == true){
       planning = require(__dirname + '/.data/planning.json');
-      console.log("Planning : " + JSON.stringify(planning).slice(0, 20));
     }
   }catch(e){
     console.err(e);
@@ -26,7 +25,6 @@ function getEleves(update){
   try{
     if(eleves == undefined || Object.keys(eleves).length == 0 || update == true){
       eleves = require(__dirname + '/.data/eleves.json');
-      console.log("Eleves : " + JSON.stringify(eleves).slice(0, 20));
     }
   }catch(e){
     console.err(e);
@@ -39,7 +37,6 @@ function getColleurs(update){
   try{
     if(colleurs == undefined || Object.keys(colleurs).length == 0 || update == true){
       colleurs = require(__dirname + '/.data/colleurs.json');
-      console.log("Colleurs : " + JSON.stringify(colleurs).slice(0, 20));
     }
   }catch(e){
     console.err(e);
