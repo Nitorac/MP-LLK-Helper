@@ -108,12 +108,16 @@ app.post('/webhook', (req, res) => {
             switch(msg.text){
               case "colle":
               case "khôlle":
+              case "khôlles":
               case "kholle":
+              case "kholles":
                 bot.say(sender, "Veuillez patienter ...");
                 bot.say(sender, "Vos 2 prochaines colles sont :\n\n\n↬  M. Peruch le mercredi 19/09/2018 de 14h30 à 15h30 (Anglais)\n\n↬  M. Patte le mercredi 26/09/2018 de 14h30 à 15h30 (Maths)\n\nATTENTION Colles d'exemples !");
                 break;
               case "help":
               case "aide":
+              case "menu":
+              case "commandes":
               case "Aidez-moi":
                 bot.say(sender, "Ce robot sert à visualiser les colles.\nLes différentes commandes sont : \n\n↬ colle\n↬ khôlle\n↬ help\n↬ aide\n↬ exos");
                 break;
