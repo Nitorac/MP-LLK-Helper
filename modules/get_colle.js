@@ -61,7 +61,8 @@ module.exports = (bot) => {
   
   function processHear(payload, chat, n, name, hasToDefine, otherNameToDisplay){
     chat.conversation((convo) => {
-      showColle(convo, payload, n, "Ranini", otherNameToDisplay, true);
+      convo.say("Veuillez patienter ...");
+      convo.say("Vos 2 prochaines colles sont :\n\n\n↬  M. Peruch le mercredi 19/09/2018 de 14h30 à 15h30 (Anglais)\n\n↬  M. Patte le mercredi 26/09/2018 de 14h30 à 15h30 (Maths)\n\nATTENTION Colles d'exemples !");
     });
     return;
     if(name == undefined){
