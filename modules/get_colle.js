@@ -60,11 +60,6 @@ module.exports = (bot) => {
   });
   
   function processHear(payload, chat, n, name, hasToDefine, otherNameToDisplay){
-    chat.conversation((convo) => {
-      convo.say("Veuillez patienter ...");
-      convo.say("Vos 2 prochaines colles sont :\n\n\n↬  M. Peruch le mercredi 19/09/2018 de 14h30 à 15h30 (Anglais)\n\n↬  M. Patte le mercredi 26/09/2018 de 14h30 à 15h30 (Maths)\n\nATTENTION Colles d'exemples !");
-    });
-    return;
     if(name == undefined){
       chat.conversation((convo) => {
         convo.say(`Je ne trouve pas votre nom dans la base de données...`);
@@ -112,7 +107,12 @@ module.exports = (bot) => {
           " à " + formattedHour(end.getUTCHours(), end.getUTCMinutes()) + " (" + c.Matiere + ")";
       message+=sub;
     }
-    chatconv.say(message + ((test != undefined && test) ? "\n\nATTENTION Colles d'exemples !" : ""), {typing: true});
+    
+    if(result.length < n){
+      message+="\n\n\nIl n'y a pas d'autres colles à afficher !";
+    }
+    
+    chatconv.say(message, {typing: true});
   }
   
   const askName = (convo, n, otherName, redirect) => {

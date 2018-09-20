@@ -95,43 +95,8 @@ app.post('/webhook', (req, res) => {
   }
   
   console.log(JSON.stringify(data));
-  //bot.handleFacebookData(data);
+  bot.handleFacebookData(data);
   
-  if(data.entry != undefined && data.entry.length != 0){
-    for (var i = 0; i < data.entry.length; i++){
-      var entry = data.entry[i];
-      if(entry.messaging != undefined && entry.messaging.length != 0){
-        for (var j = 0; j < entry.messaging.length; j++){
-          if(entry.messaging[j].message != undefined){
-            var msg = entry.messaging[j].message;
-            var sender = entry.messaging[j].sender.id;
-            switch(msg.text){
-              case "colle":
-              case "khôlle":
-              case "khôlles":
-              case "kholle":
-              case "kholles":
-                bot.say(sender, "Veuillez patienter ...");
-                bot.say(sender, "Vos 2 prochaines colles sont :\n\n\n↬  M. Peruch le mercredi 19/09/2018 de 14h30 à 15h30 (Anglais)\n\n↬  M. Patte le mercredi 26/09/2018 de 14h30 à 15h30 (Maths)\n\nATTENTION Colles d'exemples !");
-                break;
-              case "help":
-              case "aide":
-              case "menu":
-              case "commandes":
-              case "Aidez-moi":
-                bot.say(sender, "Ce robot sert à visualiser les colles.\nLes différentes commandes sont : \n\n↬ colle\n↬ khôlle\n↬ help\n↬ aide\n↬ exos");
-                break;
-              case "exos":
-                bot.say(sender, "Il n'y a aucun exercice enregistré cette semaine !");
-                break;
-              default:
-                bot.say(sender, "Je ne connais pas cette commande, tapez 'aide' ou 'help'");
-            }
-          }
-        }
-      }
-    }
-  }
   
   res.sendStatus(200);
 });
