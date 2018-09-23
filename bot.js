@@ -101,7 +101,7 @@ app.post('/webhook', (req, res) => {
   res.sendStatus(200);
 });
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public'), {extensions: ['html']}));
 
 app.listen(app.get('port'), function(){
   console.log('Started on port', app.get('port'))
